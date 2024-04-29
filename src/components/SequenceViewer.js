@@ -8,22 +8,20 @@ function choose(choices) {
 
 let sequence = "";
 let mapped_sequence = "";
-for (let i = 0; i <10000; i++) {
+for (let i = 0; i <1000000; i++) {
     sequence += choose(["A", "T", "C", "G"]);
 }
-for (let i = 0; i <200; i++) {
-    for (let j = 0; j < 25; j++) {
-        mapped_sequence += choose(["A", "T", "C", "G"]);
+for (let i = 0; i <1000; i++) {
+    for (let j = 0; j < 975; j++) {
+        mapped_sequence += choose(["-"]);
     }
     for (let j = 0; j < 25; j++) {
-        mapped_sequence += choose(["-"]);
+        mapped_sequence += choose(["A", "T", "C", "G"]);
     }
 }
 let width_page = document.body.clientWidth - 20;
 let font_family = "Arial";
 let font_size = 12;
-
-
 
 function createSVG(zoom_level) {
 
