@@ -16,7 +16,7 @@
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
-import SequenceViewer from '@/components/SequenceViewer.js'
+import SequenceViewer from './components/SequenceViewer.js'
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/antd.css'
 
@@ -27,20 +27,9 @@ export default {
     HelloWorld,
     VueSlider
   },
-  data() {
-    return {
-      zoom: 5, // initial value
-    }
-  },
   methods: {
     updateZoom(zoom) {
       SequenceViewer(zoom)
-    },
-    zoomOut () {
-        this.zoom = (this.zoom - 1) || 1
-    },
-    zoomIn () {
-      this.zoom = (this.zoom + 1) || 10
     },
   },
   mounted() {

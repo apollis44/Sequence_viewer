@@ -8,10 +8,10 @@ function choose(choices) {
 
 let sequence = "";
 let mapped_sequence = "";
-for (let i = 0; i <1000000; i++) {
+for (let i = 0; i <10000; i++) {
     sequence += choose(["A", "T", "C", "G"]);
 }
-for (let i = 0; i <1000; i++) {
+for (let i = 0; i <10; i++) {
     for (let j = 0; j < 975; j++) {
         mapped_sequence += choose(["-"]);
     }
