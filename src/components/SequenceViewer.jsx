@@ -10,12 +10,10 @@ export default defineComponent({
     props: {
         zoom_level: {
             type: Number,
-            default: 20
         },
     },
     
     setup(props){
-        console.log("SequenceViewer");
         const parentRef = ref(null)
         const zoom_level = ref(props.zoom_level);
 

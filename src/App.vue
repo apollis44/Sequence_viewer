@@ -33,7 +33,7 @@ export default {
 
   data() {
     return {
-      zoom: 20
+      zoom: 5
     }
   },
 
