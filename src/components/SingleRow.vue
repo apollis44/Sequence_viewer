@@ -76,7 +76,7 @@ export default {
             svg.append("line")
                 .attr("x1", 20)
                 .attr("y1", 2.5*this.font_size)
-                .attr("x2", x - font_widths[sequence.length - 1])
+                .attr("x2", x - font_widths[sequence.length - 1]/2)
                 .attr("y2", 2.5*this.font_size)
                 .attr("stroke", "black")
                 .attr("stroke-width", this.font_size / 12);

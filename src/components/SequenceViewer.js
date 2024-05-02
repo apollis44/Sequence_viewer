@@ -64,6 +64,21 @@ function Rows(font_size, font_family) {
 
         if (whole_mapped_sequence[i] === "-") {
             if (!skip) {
+
+                if (current_width + font_width > width_page - 40) {
+                    current_width = 0;
+                    Rows.push(new Row(
+                        sequence, 
+                        mapped_sequence, 
+                        font_widths, 
+                        nucleotides_numbers
+                    ));
+                    sequence = [];
+                    mapped_sequence = [];
+                    font_widths = [];
+                    nucleotides_numbers = [];
+                }
+                
                 nucleotide = ".......";
                 nucleotide_mapped = ".......";
                 let font_width_skip = getTextWidth(font_size, font_family, nucleotide_mapped) + 2;
