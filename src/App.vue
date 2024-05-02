@@ -3,7 +3,6 @@
   <HelloWorld msg="Welcome to Your Vue.js App"/>
   <VueSlider 
     v-model="zoom" 
-    @change="updateZoom" 
     :lazy="true" 
     :min="1"
     :max="20"
@@ -11,12 +10,15 @@
     :tooltip="'none'"
     >
   </VueSlider>
-  <svg id="viewer" width="100%"></svg>
+  <SequenceViewer 
+    :zoom_level="zoom"
+    :key="zoom">
+  </SequenceViewer>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
-import SequenceViewer from './components/SequenceViewer.js'
+import SequenceViewer from './components/SequenceViewer.jsx'
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/antd.css'
 
@@ -25,15 +27,14 @@ export default {
   name: 'App',
   components: {
     HelloWorld,
-    VueSlider
+    VueSlider,
+    SequenceViewer
   },
-  methods: {
-    updateZoom(zoom) {
-      SequenceViewer(zoom)
-    },
-  },
-  mounted() {
-    SequenceViewer(5)
+
+  data() {
+    return {
+      zoom: 20
+    }
   },
 
 }

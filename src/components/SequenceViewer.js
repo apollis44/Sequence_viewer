@@ -1,161 +1,109 @@
-
 import * as d3 from 'd3'
 
-function choose(choices) {
-    var index = Math.floor(Math.random() * choices.length);
-    return choices[index];
-  }
-
-let sequence = "";
-let mapped_sequence = "";
-for (let i = 0; i <10000; i++) {
-    sequence += choose(["A", "T", "C", "G"]);
-}
-for (let i = 0; i <10; i++) {
-    for (let j = 0; j < 975; j++) {
-        mapped_sequence += choose(["-"]);
-    }
-    for (let j = 0; j < 25; j++) {
-        mapped_sequence += choose(["A", "T", "C", "G"]);
+class Row {
+    constructor(sequence, mapped_sequence, font_widths, nucleotides_numbers) {
+        this.sequence = sequence;
+        this.mapped_sequence = mapped_sequence;
+        this.font_widths = font_widths;
+        this.nucleotides_numbers = nucleotides_numbers;
     }
 }
-let width_page = document.body.clientWidth - 20;
-let font_family = "Arial";
-let font_size = 12;
 
-function createSVG(zoom_level) {
+function Rows(font_size, font_family) {
+    function choose(choices) {
+        var index = Math.floor(Math.random() * choices.length);
+        return choices[index];
+    }
 
-    // clear the svg
+    let whole_sequence = "";
+    let whole_mapped_sequence = "";
+    for (let i = 0; i <20000; i++) {
+        whole_sequence += choose(["A", "T", "C", "G"]);
+    }
+    for (let i = 0; i <200; i++) {
+        for (let j = 0; j < 70; j++) {
+            whole_mapped_sequence += choose(["-"]);
+        }
+        for (let j = 0; j < 30; j++) {
+            whole_mapped_sequence += choose(["A", "T", "C", "G"]);
+        }
+    }
+    let width_page = document.body.clientWidth - 20;
+    
     d3.selectAll("svg > *").remove();
 
-    font_size = zoom_level;
+    let sequence = [];
+    let mapped_sequence = [];
+    let font_widths = [];
+    let nucleotides_numbers = [];
     let font_width = getTextWidth(font_size, font_family);
-
-    let y = font_size + 10;
     
-    let height = 0;
+    let Rows = [];
+    let current_width = 0;
 
-    let svg = d3.select("svg")
-        .attr("width", width_page)
-        .style("background-color", "white");
-    
-    let current_nucleotide = 0;
-    while (current_nucleotide < sequence.length) {
-        current_nucleotide = createLine(sequence, mapped_sequence, font_width, y, svg, current_nucleotide, sequence.length);
-
-        y += 5.5 * font_size;
-        height += 5.5 * font_size;
-    }
-    svg.attr("height", height + 10);
-
-    return svg.node;
-}
-
-function createLine(sequence, sequence_mapped, font_width, y, svg, current_nucleotide, total_nucleotides) {
-
-    let x = font_width;
     let nucleotide = "";
     let nucleotide_mapped = "";
-    let color_mapped = "";
     let skip = false;
 
-    while (x + font_width < width_page && current_nucleotide < total_nucleotides) {
-        nucleotide = sequence[current_nucleotide];
+    for (let i = 0; i < whole_sequence.length; i++) {
+        if (current_width + font_width > width_page - 40) {
+            current_width = 0;
+            Rows.push(new Row(
+                sequence, 
+                mapped_sequence, 
+                font_widths, 
+                nucleotides_numbers
+            ));
+            sequence = [];
+            mapped_sequence = [];
+            font_widths = [];
+            nucleotides_numbers = [];
+        }
 
-        if (sequence_mapped[current_nucleotide] === "-") {
+        nucleotide = whole_sequence[i];
+
+        if (whole_mapped_sequence[i] === "-") {
             if (!skip) {
                 nucleotide = ".......";
                 nucleotide_mapped = ".......";
                 let font_width_skip = getTextWidth(font_size, font_family, nucleotide_mapped) + 2;
-                color_mapped = "black";
+                current_width += font_width_skip;
 
-                svg.append("text")
-                    .attr("x", x + font_width_skip/2 - font_width/2)
-                    .attr("y", y)
-                    .attr("font-size", font_size + "px")
-                    .attr("text-anchor", "middle")
-                    .attr("font-family", font_family)
-                    .style("font-weight", "bold")
-                    .text(nucleotide);
-
-                svg.append("text")
-                    .attr("x", x + font_width_skip/2 - font_width/2)
-                    .attr("y", y + 1 * font_size)
-                    .attr("font-size", font_size + "px")
-                    .attr("fill", color_mapped)
-                    .attr("text-anchor", "middle")
-                    .attr("font-family", font_family)
-                    .style("font-weight", "bold")
-                    .text(nucleotide_mapped);
-                
-                x += font_width_skip;
+                font_widths.push(font_width_skip);
+                nucleotides_numbers.push(1);
+                sequence.push(nucleotide);
+                mapped_sequence.push(nucleotide_mapped);
             }
-            current_nucleotide++;
             skip = true;
             continue;
         }
-        else if (sequence_mapped[current_nucleotide] != nucleotide) {
-            color_mapped = "red";
-            nucleotide_mapped = sequence_mapped[current_nucleotide];
+        else if (whole_mapped_sequence[i] != nucleotide) {
+            nucleotide_mapped = whole_mapped_sequence[i];
             skip = false;
         }
         else {
-            color_mapped = "black";
             nucleotide_mapped = "-";
             skip = false;
         }
 
-        svg.append("text")
-            .attr("x", x)
-            .attr("y", y)
-            .attr("font-size", font_size + "px")
-            .attr("text-anchor", "middle")
-            .attr("font-family", font_family)
-            .text(nucleotide);
-
-        svg.append("text")
-            .attr("x", x)
-            .attr("y", y + 1 * font_size)
-            .attr("font-size", font_size + "px")
-            .attr("fill", color_mapped)
-            .attr("text-anchor", "middle")
-            .attr("font-family", font_family)
-            .text(nucleotide_mapped);
-
-        if ((current_nucleotide + 1) % 5 === 0) {
-            svg.append("line")
-            .attr("x1", x)
-            .attr("y1", y + 1.5 * font_size)
-            .attr("x2", x)
-            .attr("y2", y + 2 * font_size)
-            .attr("stroke", "black")
-            .attr("stroke-width", 1 * font_size / 12);
-
-            svg.append("text")
-                .attr("x", x)
-                .attr("y", y + 3 * font_size )
-                .attr("font-size", font_size  + "px")
-                .attr("fill", "black")
-                .attr("text-anchor", "middle")
-                .text(current_nucleotide + 1);
-
-        }
-        x += font_width;
-        current_nucleotide++;
+        current_width += font_width;
+        font_widths.push(font_width);
+        nucleotides_numbers.push(i + 1);
+        sequence.push(nucleotide);
+        mapped_sequence.push(nucleotide_mapped);
     }
-    svg.append("line")
-        .attr("x1", font_width/2)
-        .attr("y1", y + 1.5*font_size)
-        .attr("x2", x - font_width)
-        .attr("y2", y + 1.5*font_size)
-        .attr("stroke", "black")
-        .attr("stroke-width", 1 * font_size / 12);
+    Rows.push(new Row(
+        sequence,
+        mapped_sequence,
+        font_widths,
+        nucleotides_numbers
+    ));
 
-    return current_nucleotide;
+    return Rows;
 }
 
 function getTextWidth(font_size, font_family, text = "G") {  
-     
+        
     let inputText = text; 
     let font = font_size + "px " + font_family; 
     
@@ -164,9 +112,6 @@ function getTextWidth(font_size, font_family, text = "G") {
     context.font = font; 
     let width = context.measureText(inputText).width; 
     return width;
-} 
-
-export default function SequenceViewer(zoom_level) {
-    createSVG(zoom_level);
 }
-  
+
+export default Rows;
