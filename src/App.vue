@@ -1,43 +1,18 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
-  <VueSlider 
-    v-model="zoom" 
-    :lazy="true" 
-    :min="1"
-    :max="20"
-    :interval="0.1"
-    :tooltip="'none'"
-    >
-  </VueSlider>
-  <SequenceViewer 
-    :zoom_level="zoom"
-    :key="zoom">
-  </SequenceViewer>
+  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
-import SequenceViewer from './components/SequenceViewer.jsx'
-import VueSlider from 'vue-slider-component'
-import 'vue-slider-component/theme/antd.css'
+<script lang="ts">
+import { Options, Vue } from 'vue-class-component';
+import HelloWorld from './components/HelloWorld.vue';
 
-
-export default {
-  name: 'App',
+@Options({
   components: {
     HelloWorld,
-    VueSlider,
-    SequenceViewer
   },
-
-  data() {
-    return {
-      zoom: 5
-    }
-  },
-
-}
+})
+export default class App extends Vue {}
 </script>
 
 <style>

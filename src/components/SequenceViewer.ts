@@ -16,7 +16,7 @@ class Row {
 
 function Rows(font_size: string, font_family: string) {
     function choose(choices: string[]) {
-        var index = Math.floor(Math.random() * choices.length);
+        const index = Math.floor(Math.random() * choices.length);
         return choices[index];
     }
 
@@ -33,7 +33,7 @@ function Rows(font_size: string, font_family: string) {
             whole_mapped_sequence += choose(["A", "T", "C", "G"]);
         }
     }
-    let width_page = document.body.clientWidth - 20;
+    const width_page = document.body.clientWidth - 20;
     
     d3.selectAll("svg > *").remove();
 
@@ -41,9 +41,9 @@ function Rows(font_size: string, font_family: string) {
     let mapped_sequence = [];
     let font_widths = [];
     let nucleotides_numbers = [];
-    let font_width = getTextWidth(font_size, font_family);
+    const font_width = getTextWidth(font_size, font_family);
     
-    let Rows = [];
+    const Rows = [];
     let current_width = 0;
 
     let nucleotide = "";
@@ -86,7 +86,7 @@ function Rows(font_size: string, font_family: string) {
                 
                 nucleotide = ".......";
                 nucleotide_mapped = ".......";
-                let font_width_skip = getTextWidth(font_size, font_family, nucleotide_mapped) + 2;
+                const font_width_skip = getTextWidth(font_size, font_family, nucleotide_mapped) + 2;
                 current_width += font_width_skip;
 
                 font_widths.push(font_width_skip);
@@ -124,13 +124,13 @@ function Rows(font_size: string, font_family: string) {
 
 function getTextWidth(font_size: string, font_family: string, text = "G") {  
         
-    let inputText = text; 
-    let font = font_size + "px " + font_family; 
+    const inputText = text; 
+    const font = font_size + "px " + font_family; 
     
-    let canvas = document.createElement("canvas"); 
-    let context = canvas.getContext("2d"); 
+    const canvas = document.createElement("canvas"); 
+    const context = canvas.getContext("2d"); 
     context.font = font; 
-    let width = context.measureText(inputText).width; 
+    const width = context.measureText(inputText).width; 
     return width;
 }
 
