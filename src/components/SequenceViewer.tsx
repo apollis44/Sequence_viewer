@@ -1,6 +1,6 @@
 import { defineComponent } from "vue";
 import SingleRow from './SingleRow.vue'
-import Rows from './SequenceViewer.ts'
+import Rows from './SequenceViewer'
 import { ref, h, computed } from 'vue'
 import { useVirtualizer } from '@tanstack/vue-virtual'
 
@@ -13,18 +13,18 @@ export default defineComponent({
         },
     },
     
-    setup(props){
+    setup(props: { zoom_level: Number | undefined }){
         const parentRef = ref(null)
         const zoom_level = ref(props.zoom_level);
 
-        let font_family = "Arial";
-        let font_size = zoom_level.value;
+        const font_family = "Arial";
+        const font_size: Number = zoom_level.value ? zoom_level.value : 12;
 
-        let rows = Rows(font_size, font_family);
+        const rows = Rows(font_size, font_family);
         const rowVirtualizer = useVirtualizer({
             count: rows.length,
-            getScrollElement:() => parentRef.value,
-            estimateSize: () => 5 * font_size,
+            getScrollElement: () => parentRef.value,
+            estimateSize: () => 5 * Number(font_size),
             overscan: 5,
         });
 
@@ -36,7 +36,7 @@ export default defineComponent({
                 h('div', {ref: parentRef, style: {height: "400px", overflow: 'auto'}},
                     [h('div', {
                         style:{ height: `${totalSize.value}px`, width: '100%', position: 'relative' }},
-                        [virtualRows.value.map((virtualRow) => {
+                        [virtualRows.value.map((virtualRow:{ index: number, size: number, start: number }) => {
                             return (
                                 h('div', {
                                     key:virtualRow.index,

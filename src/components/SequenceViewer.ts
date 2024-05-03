@@ -14,7 +14,7 @@ class Row {
     }
 }
 
-function Rows(font_size: string, font_family: string) {
+function Rows(font_size: Number, font_family: string) {
     function choose(choices: string[]) {
         const index = Math.floor(Math.random() * choices.length);
         return choices[index];
@@ -122,15 +122,20 @@ function Rows(font_size: string, font_family: string) {
     return Rows;
 }
 
-function getTextWidth(font_size: string, font_family: string, text = "G") {  
-        
+function getTextWidth(font_size: Number, font_family: string, text = "G") {  
     const inputText = text; 
     const font = font_size + "px " + font_family; 
     
     const canvas = document.createElement("canvas"); 
     const context = canvas.getContext("2d"); 
-    context.font = font; 
-    const width = context.measureText(inputText).width; 
+    if (context) {
+        context.font = font; 
+    }
+    else {
+        return 0;
+    }
+    
+    const width = context?.measureText(inputText).width; 
     return width;
 }
 
