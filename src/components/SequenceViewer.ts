@@ -1,7 +1,12 @@
 import * as d3 from 'd3'
 
 class Row {
-    constructor(sequence, mapped_sequence, font_widths, nucleotides_numbers) {
+    sequence: string[];
+    mapped_sequence: string[];
+    font_widths: number[];
+    nucleotides_numbers: number[];
+
+    constructor(sequence: string[], mapped_sequence: string[], font_widths: number[], nucleotides_numbers: number[]) {
         this.sequence = sequence;
         this.mapped_sequence = mapped_sequence;
         this.font_widths = font_widths;
@@ -9,8 +14,8 @@ class Row {
     }
 }
 
-function Rows(font_size, font_family) {
-    function choose(choices) {
+function Rows(font_size: string, font_family: string) {
+    function choose(choices: string[]) {
         var index = Math.floor(Math.random() * choices.length);
         return choices[index];
     }
@@ -117,7 +122,7 @@ function Rows(font_size, font_family) {
     return Rows;
 }
 
-function getTextWidth(font_size, font_family, text = "G") {  
+function getTextWidth(font_size: string, font_family: string, text = "G") {  
         
     let inputText = text; 
     let font = font_size + "px " + font_family; 

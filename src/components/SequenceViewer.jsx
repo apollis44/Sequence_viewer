@@ -1,6 +1,6 @@
 import { defineComponent } from "vue";
 import SingleRow from './SingleRow.vue'
-import Rows from './SequenceViewer.js'
+import Rows from './SequenceViewer.ts'
 import { ref, h, computed } from 'vue'
 import { useVirtualizer } from '@tanstack/vue-virtual'
 
