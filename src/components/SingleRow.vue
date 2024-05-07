@@ -15,9 +15,13 @@ export default {
             const svg = d3.select('#svg_' + this.virtualRow.index);
 
             let sequence = this.row.sequence;
-            let mapped_sequence = this.row.mapped_sequence;
+            let mapped_sequence = this.row.mapped_sequence[0];
             let font_widths = this.row.font_widths;
             let nucleotides_numbers = this.row.nucleotides_numbers;
+            console.log(font_widths);
+            console.log(nucleotides_numbers);
+            console.log(sequence);
+            console.log(mapped_sequence);
 
             let x = 20 + font_widths[0]/2;
 

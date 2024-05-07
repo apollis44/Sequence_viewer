@@ -2,11 +2,11 @@ import * as d3 from 'd3'
 
 class Row {
     sequence: string[];
-    mapped_sequence: string[];
+    mapped_sequence: string[][];
     font_widths: number[];
     nucleotides_numbers: number[];
 
-    constructor(sequence: string[], mapped_sequence: string[], font_widths: number[], nucleotides_numbers: number[]) {
+    constructor(sequence: string[], mapped_sequence: string[][], font_widths: number[], nucleotides_numbers: number[]) {
         this.sequence = sequence;
         this.mapped_sequence = mapped_sequence;
         this.font_widths = font_widths;
@@ -21,24 +21,35 @@ function Rows(font_size: Number, font_family: string) {
     }
 
     let whole_sequence = "";
-    let whole_mapped_sequence = "";
-    for (let i = 0; i <20000; i++) {
+    let whole_mapped_sequence1 = "";
+    let whole_mapped_sequence2 = "";
+    for (let i = 0; i <200; i++) {
         whole_sequence += choose(["A", "T", "C", "G"]);
     }
-    for (let i = 0; i <200; i++) {
+    for (let i = 0; i <2; i++) {
         for (let j = 0; j < 70; j++) {
-            whole_mapped_sequence += choose(["-"]);
+            whole_mapped_sequence1 += choose(["-"]);
         }
         for (let j = 0; j < 30; j++) {
-            whole_mapped_sequence += choose(["A", "T", "C", "G"]);
+            whole_mapped_sequence1 += choose(["A", "T", "C", "G"]);
+        }
+        for (let j = 0; j < 60; j++) {
+            whole_mapped_sequence2 += choose(["-"]);
+        }
+        for (let j = 0; j < 40; j++) {
+            whole_mapped_sequence2 += choose(["A", "T", "C", "G"]);
         }
     }
-    const width_page = document.body.clientWidth - 20;
-    
-    d3.selectAll("svg > *").remove();
+    const whole_mapped_sequences = [whole_mapped_sequence1, whole_mapped_sequence2];
+    const nb_mapping = whole_mapped_sequences.length;
 
-    let sequence = [];
-    let mapped_sequence = [];
+    const width_page = document.body.clientWidth - 20;
+
+    let sequence: string[] = [];
+    let mapped_sequences: string[][] = [];
+    for (let _ = 0; _ < nb_mapping; _++){
+        mapped_sequences.push([]);
+    }
     let font_widths = [];
     let nucleotides_numbers = [];
     const font_width = getTextWidth(font_size, font_family);
@@ -47,7 +58,7 @@ function Rows(font_size: Number, font_family: string) {
     let current_width = 0;
 
     let nucleotide = "";
-    let nucleotide_mapped = "";
+    const nucleotide_mapped: string[] = [];
     let skip = false;
 
     for (let i = 0; i < whole_sequence.length; i++) {
@@ -55,54 +66,67 @@ function Rows(font_size: Number, font_family: string) {
             current_width = 0;
             Rows.push(new Row(
                 sequence, 
-                mapped_sequence, 
+                mapped_sequences, 
                 font_widths, 
                 nucleotides_numbers
             ));
             sequence = [];
-            mapped_sequence = [];
+            mapped_sequences = [];
+            for (let _ = 0; _ < nb_mapping; _++){
+                mapped_sequences.push([]);
+            }
             font_widths = [];
             nucleotides_numbers = [];
         }
 
         nucleotide = whole_sequence[i];
 
-        if (whole_mapped_sequence[i] === "-") {
+        if (whole_mapped_sequence1[i] === "-" && whole_mapped_sequence2[i] === "-") {
             if (!skip) {
 
                 if (current_width + font_width > width_page - 40) {
                     current_width = 0;
                     Rows.push(new Row(
                         sequence, 
-                        mapped_sequence, 
+                        mapped_sequences, 
                         font_widths, 
                         nucleotides_numbers
                     ));
                     sequence = [];
-                    mapped_sequence = [];
+                    mapped_sequences = [];
+                    for (let _ = 0; _ < nb_mapping; _++){
+                        mapped_sequences.push([]);
+                    }
                     font_widths = [];
                     nucleotides_numbers = [];
                 }
                 
                 nucleotide = ".......";
-                nucleotide_mapped = ".......";
-                const font_width_skip = getTextWidth(font_size, font_family, nucleotide_mapped) + 2;
+                for (let j = 0; j < nb_mapping; j++){
+                    nucleotide_mapped[j] = ".......";
+                }
+                const font_width_skip = getTextWidth(font_size, font_family, nucleotide_mapped[0]) + 2;
                 current_width += font_width_skip;
 
                 font_widths.push(font_width_skip);
                 nucleotides_numbers.push(1);
                 sequence.push(nucleotide);
-                mapped_sequence.push(nucleotide_mapped);
+                for (let j = 0; j < nb_mapping; j++){
+                    mapped_sequences[j].push(nucleotide_mapped[j]);
+                }
             }
             skip = true;
             continue;
         }
-        else if (whole_mapped_sequence[i] != nucleotide) {
-            nucleotide_mapped = whole_mapped_sequence[i];
-            skip = false;
-        }
         else {
-            nucleotide_mapped = "-";
+            for (let j = 0; j < nb_mapping; j++){
+                if (whole_mapped_sequences[j][i] != "-") {
+                    nucleotide_mapped[j] = whole_mapped_sequences[j][i];
+                }
+                else {
+                    nucleotide_mapped[j] = "-";
+                }
+            }
             skip = false;
         }
 
@@ -110,11 +134,13 @@ function Rows(font_size: Number, font_family: string) {
         font_widths.push(font_width);
         nucleotides_numbers.push(i + 1);
         sequence.push(nucleotide);
-        mapped_sequence.push(nucleotide_mapped);
+        for (let j = 0; j < nb_mapping; j++){
+            mapped_sequences[j].push(nucleotide_mapped[j]);
+        }
     }
     Rows.push(new Row(
         sequence,
-        mapped_sequence,
+        mapped_sequences,
         font_widths,
         nucleotides_numbers
     ));
