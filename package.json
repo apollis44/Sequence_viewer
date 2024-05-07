@@ -12,12 +12,10 @@
     "@tanstack/vue-virtual": "^3.5.0",
     "core-js": "^3.8.3",
     "d3": "^7.9.0",
-    "react": "^18.3.1",
     "react-router-dom": "^6.23.0",
     "vue": "^3.4.26",
-    "vue-class-component": "^8.0.0-0",
-    "vue-d3": "^0.1.0",
-    "vue-slider-component": "^3.2.24"
+    "vue-3-slider-component": "^0.1.4",
+    "vue-d3": "^0.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
@@ -25,7 +23,6 @@
     "@types/d3": "^7.4.3",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
-    "@vue/babel-plugin-jsx": "^1.2.2",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-plugin-typescript": "~5.0.0",

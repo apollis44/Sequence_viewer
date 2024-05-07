@@ -8,6 +8,7 @@
     :max="20"
     :interval="0.1"
     :tooltip="'none'"
+    style="margin: 10px 0"
     >
   </VueSlider>
   <SequenceViewer 
@@ -19,9 +20,7 @@
 <script>
 import HelloWorld from './components/HelloWorld.vue'
 import SequenceViewer from './components/SequenceViewer.tsx'
-import VueSlider from 'vue-slider-component'
-import 'vue-slider-component/theme/antd.css'
-
+import VueSlider from 'vue-3-slider-component'
 
 export default {
   name: 'App',

@@ -1,6 +1,6 @@
 import { defineComponent } from "vue";
 import SingleRow from './SingleRow.vue'
-import Rows from './SequenceViewer'
+import Rows from './SequenceViewer.ts'
 import { ref, h, computed } from 'vue'
 import { useVirtualizer } from '@tanstack/vue-virtual'
 
@@ -39,17 +39,17 @@ export default defineComponent({
                         [virtualRows.value.map((virtualRow:{ index: number, size: number, start: number }) => {
                             return (
                                 h('div', {
-                                    key:virtualRow.index,
-                                    style:{
+                                    key: virtualRow.index,
+                                    style: {
                                         position: 'absolute',
                                         top: 0,
                                         left: 0,
                                         width: '100%',
                                         height: `${virtualRow.size}px`,
                                         transform: `translateY(${virtualRow.start}px)`,
-                                    }}, 
-                                    [<SingleRow virtualRow={virtualRow} row={rows[virtualRow.index]} font_size={font_size} font_family={font_family} />])
-
+                                    }
+                                },
+                                [h(SingleRow, { virtualRow, row: rows[virtualRow.index], font_size: font_size, font_family: font_family })])
                             );
                         })
                     ])
