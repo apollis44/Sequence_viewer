@@ -41,7 +41,7 @@ export default {
                 for (let j = 0; j < nb_mapping; j++){
                     nucleotide_mapped = mapped_sequence[j][i];
 
-                    if (nucleotide_mapped === "-" || nucleotide_mapped === "......." || nucleotide_mapped === "·") {
+                    if (nucleotide_mapped === "-" || nucleotide_mapped === ".......") {
                         color_mapped = "black";
                     }
                     else {

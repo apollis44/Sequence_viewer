@@ -1,6 +1,6 @@
 import { defineComponent } from "vue";
 import SingleRow from './SingleRow.vue'
-import Rows from './SequenceViewer'
+import { Rows, Row } from './SequenceViewerConstruction'
 import { ref, h, computed } from 'vue'
 import { useVirtualizer } from '@tanstack/vue-virtual'
 
@@ -20,7 +20,7 @@ export default defineComponent({
         const font_family = "Arial";
         const font_size: Number = zoom_level.value ? zoom_level.value : 12;
 
-        const rows = Rows(font_size, font_family);
+        const rows: Row[] = Rows(font_size, font_family);
         const rowVirtualizer = useVirtualizer({
             count: rows.length,
             getScrollElement: () => parentRef.value,

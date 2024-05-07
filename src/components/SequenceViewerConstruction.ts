@@ -1,4 +1,4 @@
-class Row {
+export class Row {
     sequence: string[];
     mapped_sequence: string[][];
     font_widths: number[];
@@ -12,7 +12,7 @@ class Row {
     }
 }
 
-function Rows(font_size: Number, font_family: string) {
+export function Rows(font_size: Number, font_family: string) {
     function choose(choices: string[]) {
         const index = Math.floor(Math.random() * choices.length);
         return choices[index];
@@ -23,9 +23,7 @@ function Rows(font_size: Number, font_family: string) {
     let whole_mapped_sequence2 = "";
     let whole_mapped_sequence3 = "";
     let whole_mapped_sequence4 = "";
-    let whole_mapped_sequence5 = "";
-    let whole_mapped_sequence6 = "";
-    let whole_mapped_sequence7 = "";
+
     for (let i = 0; i <20000; i++) {
         whole_sequence += choose(["A", "T", "C", "G"]);
     }
@@ -45,12 +43,9 @@ function Rows(font_size: Number, font_family: string) {
         for (let j = 0; j < 100; j++) {
             whole_mapped_sequence3 += choose(["A", "T", "C", "G"]);
             whole_mapped_sequence4 += choose(["A", "T", "C", "G"]);
-            whole_mapped_sequence5 += choose(["A", "T", "C", "G"]);
-            whole_mapped_sequence6 += choose(["A", "T", "C", "G"]);
-            whole_mapped_sequence7 += choose(["A", "T", "C", "G"]);
         }
     }
-    const whole_mapped_sequences = [whole_mapped_sequence1, whole_mapped_sequence2, whole_mapped_sequence3, whole_mapped_sequence4, whole_mapped_sequence5, whole_mapped_sequence6, whole_mapped_sequence7];
+    const whole_mapped_sequences = [whole_mapped_sequence1, whole_mapped_sequence2, whole_mapped_sequence3, whole_mapped_sequence4];
     const nb_mapping = whole_mapped_sequences.length;
 
     const width_page = document.body.clientWidth - 20;
@@ -134,7 +129,7 @@ function Rows(font_size: Number, font_family: string) {
                     nucleotide_mapped[j] = "-";
                 }
                 else if (whole_mapped_sequences[j][i] == "-") {
-                    nucleotide_mapped[j] = "·";
+                    nucleotide_mapped[j] = " ";
                 }
                 else {
                     nucleotide_mapped[j] = whole_mapped_sequences[j][i];
@@ -177,5 +172,3 @@ function getTextWidth(font_size: Number, font_family: string, text = "G") {
     const width = context?.measureText(inputText).width; 
     return width;
 }
-
-export default Rows;
