@@ -15,13 +15,10 @@ export default {
             const svg = d3.select('#svg_' + this.virtualRow.index);
 
             let sequence = this.row.sequence;
-            let mapped_sequence = this.row.mapped_sequence[0];
+            let mapped_sequence = this.row.mapped_sequence;
             let font_widths = this.row.font_widths;
             let nucleotides_numbers = this.row.nucleotides_numbers;
-            console.log(font_widths);
-            console.log(nucleotides_numbers);
-            console.log(sequence);
-            console.log(mapped_sequence);
+            let nb_mapping = mapped_sequence.length;
 
             let x = 20 + font_widths[0]/2;
 
@@ -32,14 +29,7 @@ export default {
 
             for (let i = 0; i < sequence.length; i++){
                 nucleotide = sequence[i];
-                nucleotide_mapped = mapped_sequence[i];
 
-                if (mapped_sequence[i] === "-" || mapped_sequence[i] === ".......") {
-                    color_mapped = "black";
-                }
-                else {
-                    color_mapped = "red";
-                }
                 svg.append("text")
                    .attr("x", x - current_font_width/2 + font_widths[i]/2)
                    .attr("y", this.font_size)
@@ -48,27 +38,39 @@ export default {
                    .attr("font-family", this.font_family)
                    .text(nucleotide);
 
-                svg.append("text")
-                   .attr("x", x - current_font_width/2 + font_widths[i]/2)
-                   .attr("y", 2 * this.font_size)
-                   .attr("font-size", this.font_size + "px")
-                   .attr("fill", color_mapped)
-                   .attr("text-anchor", "middle")
-                   .attr("font-family", this.font_family)
-                   .text(nucleotide_mapped);
+                for (let j = 0; j < nb_mapping; j++){
+                    nucleotide_mapped = mapped_sequence[j][i];
 
-                if ((nucleotides_numbers[i]) % 5 === 0) {
+                    if (nucleotide_mapped === "-" || nucleotide_mapped === "......." || nucleotide_mapped === "·") {
+                        color_mapped = "black";
+                    }
+                    else {
+                        color_mapped = "red";
+                    }
+
+                    svg.append("text")
+                    .attr("x", x - current_font_width/2 + font_widths[i]/2)
+                    .attr("y", (2 + j) * this.font_size)
+                    .attr("font-size", this.font_size + "px")
+                    .attr("fill", color_mapped)
+                    .attr("text-anchor", "middle")
+                    .attr("font-family", this.font_family)
+                    .text(nucleotide_mapped);
+                }
+
+
+                if ((nucleotides_numbers[i]) % 10 === 0) {
                     svg.append("line")
                        .attr("x1", x)
-                       .attr("y1", 2.5 * this.font_size)
+                       .attr("y1", (1.5 + nb_mapping) * this.font_size)
                        .attr("x2", x)
-                       .attr("y2", 3 * this.font_size)
+                       .attr("y2", (2 + nb_mapping) * this.font_size)
                        .attr("stroke", "black")
                        .attr("stroke-width", 1 * this.font_size / 12);
 
                     svg.append("text")
                        .attr("x", x)
-                       .attr("y", 3.5 * this.font_size )
+                       .attr("y", (2.5 + nb_mapping) * this.font_size )
                        .attr("font-size", this.font_size/1.7  + "px")
                        .attr("fill", "black")
                        .attr("text-anchor", "middle")
@@ -79,9 +81,9 @@ export default {
             }
             svg.append("line")
                 .attr("x1", 20)
-                .attr("y1", 2.5*this.font_size)
+                .attr("y1", (1.5 + nb_mapping) * this.font_size)
                 .attr("x2", x - font_widths[sequence.length - 1]/2)
-                .attr("y2", 2.5*this.font_size)
+                .attr("y2", (1.5 + nb_mapping) * this.font_size)
                 .attr("stroke", "black")
                 .attr("stroke-width", this.font_size / 12);
         },

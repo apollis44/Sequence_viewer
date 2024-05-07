@@ -1,6 +1,6 @@
 import { defineComponent } from "vue";
 import SingleRow from './SingleRow.vue'
-import Rows from './SequenceViewer.ts'
+import Rows from './SequenceViewer'
 import { ref, h, computed } from 'vue'
 import { useVirtualizer } from '@tanstack/vue-virtual'
 
@@ -24,7 +24,7 @@ export default defineComponent({
         const rowVirtualizer = useVirtualizer({
             count: rows.length,
             getScrollElement: () => parentRef.value,
-            estimateSize: () => 5 * Number(font_size),
+            estimateSize: () => (3 + rows[0].mapped_sequence.length)  * Number(font_size),
             overscan: 5,
         });
 
